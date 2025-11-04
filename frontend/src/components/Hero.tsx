@@ -1,6 +1,12 @@
+"use client";
+
 import Image from "next/image";
 
 export default function Hero() {
+  const scrollToAbout = () => {
+    document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <section id="hero" className="relative min-h-screen flex flex-col items-center justify-center px-6 py-20">
       {/* Content */}
@@ -31,7 +37,11 @@ export default function Hero() {
       </div>
       
       {/* Arrow pointing down */}
-      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 animate-bounce">
+      <button
+        onClick={scrollToAbout}
+        className="absolute bottom-12 left-1/2 -translate-x-1/2 animate-bounce hover:text-brand-orange transition-colors cursor-pointer"
+        aria-label="Scroll to about section"
+      >
         <svg
           width="24"
           height="24"
@@ -41,12 +51,12 @@ export default function Hero() {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="text-foreground/40"
+          className="text-foreground/40 hover:text-current"
         >
           <line x1="12" y1="5" x2="12" y2="19"></line>
           <polyline points="19 12 12 19 5 12"></polyline>
         </svg>
-      </div>
+      </button>
     </section>
   );
 }
