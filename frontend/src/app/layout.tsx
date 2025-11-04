@@ -17,6 +17,8 @@ export const metadata: Metadata = {
   description: "Masters student at the University of Melbourne",
   icons: {
     icon: "/image.png",
+    shortcut: "/image.png",
+    apple: "/image.png",
   },
 };
 
