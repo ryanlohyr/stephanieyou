@@ -16,7 +16,7 @@ const experiences = [
   {
     company: "LearnKata, Remote",
     role: "Marketing Lead",
-    period: "Jun 2025 - Present",
+    period: "Oct 2025 - Present",
     description:
       "Lead B2C edtech marketing from strategy to execution: research trends, design campaigns, optimize SEO, and produce video content.",
     socialMedia: "https://www.tiktok.com/@learnkata",
