@@ -25,7 +25,7 @@ export default function Hero() {
             Aspiring Marketer based in Melbourne
           </p>
           <p className="text-base md:text-lg text-foreground/50 leading-relaxed max-w-xl mx-auto pt-4">
-            I am a masters student studying at the University of Melbourne, passionate about creating meaningful digital experiences and building communities.
+            I am studying Master of Management (Marketing) at the University of Melbourne, passionate about creating meaningful digital experiences and building communities.
           </p>
         </div>
       </div>
