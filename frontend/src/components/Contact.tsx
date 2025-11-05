@@ -42,7 +42,7 @@ export default function Contact() {
                 rel="noopener noreferrer"
                 className="text-foreground/60 hover:text-accent-blue transition-colors"
               >
-                小红书
+                Rednote
               </a>
             </div>
           </div>
