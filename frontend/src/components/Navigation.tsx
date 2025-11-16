@@ -25,7 +25,7 @@ export default function Navigation() {
       observerOptions
     );
 
-    const sections = ["hero", "about", "work", "contact"];
+    const sections = ["hero", "about", "work", "showcase", "contact"];
     sections.forEach((sectionId) => {
       const element = document.getElementById(sectionId);
       if (element) {
@@ -54,6 +54,7 @@ export default function Navigation() {
     { id: "hero", label: "Home" },
     { id: "about", label: "About" },
     { id: "work", label: "Work" },
+    { id: "showcase", label: "Showcase" },
     { id: "contact", label: "Contact" },
   ];
 
