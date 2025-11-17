@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import {
   Carousel,
@@ -8,6 +8,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from "@/components/ui/carousel";
 
 interface ShowcaseItem {
@@ -15,7 +16,7 @@ interface ShowcaseItem {
   type: "image" | "video";
   company: string;
   alt: string;
-  description: string;
+  description?: string;
   link?: string;
   stats?: string;
 }
@@ -23,28 +24,31 @@ interface ShowcaseItem {
 const showcaseData: ShowcaseItem[] = [
   // LearnKata
   {
-    src: "/showcase/learnkata/chrome-skit.mp4",
+    src: "/showcase/learnkata/first-vid.mp4",
     type: "video",
     company: "LearnKata",
     alt: "LearnKata content 1",
-    description: "Educational skit demonstrating Chrome browser safety and best practices for online learning.",
-    stats: "500K+ views",
+    link: "https://www.tiktok.com/@learnkata/video/7567279937627999506?is_from_webapp=1&sender_device=pc&web_id=7541600165145806354"
   },
   {
     src: "/showcase/learnkata/illegal-skit.MOV",
     type: "video",
     company: "LearnKata",
     alt: "LearnKata skit",
-    description: "Engaging content about digital citizenship and understanding online regulations.",
-    stats: "350K+ views",
+    link: 'https://www.tiktok.com/@learnkata/video/7569159330612677908?is_from_webapp=1&sender_device=pc&web_id=7541600165145806354'
   },
   {
     src: "/showcase/learnkata/sleep-skit.mp4",
     type: "video",
     company: "LearnKata",
     alt: "LearnKata sleep skit",
-    description: "Creative piece highlighting the importance of healthy sleep habits for students.",
-    stats: "420K+ views",
+    link: 'https://www.tiktok.com/@learnkata/video/7568400063815519508?is_from_webapp=1&sender_device=pc&web_id=7541600165145806354'
+  },
+  {
+    src: "/showcase/learnkata/chrome-skit.mp4",
+    type: "video",
+    company: "LearnKata",
+    alt: "LearnKata content 1",
   },
   // ThinkPink
   {
@@ -52,22 +56,18 @@ const showcaseData: ShowcaseItem[] = [
     type: "video",
     company: "ThinkPink Foundation",
     alt: "ThinkPink Day of Indulgence",
-    description: "Day of Indulgence event coverage showcasing breast cancer awareness initiatives and community support.",
-    link: "https://thinkpink.org.au",
   },
   {
     src: "/showcase/thinkpink/IMG_0426.PNG",
     type: "image",
     company: "ThinkPink Foundation",
     alt: "ThinkPink content 1",
-    description: "Social media campaign promoting breast cancer awareness and early detection.",
   },
   {
     src: "/showcase/thinkpink/IMG_0427.PNG",
     type: "image",
     company: "ThinkPink Foundation",
     alt: "ThinkPink content 2",
-    description: "Community engagement content for ThinkPink Foundation's fundraising initiatives.",
   },
   // Toyota
   {
@@ -75,14 +75,12 @@ const showcaseData: ShowcaseItem[] = [
     type: "image",
     company: "Toyota",
     alt: "Toyota work 1",
-    description: "Marketing campaign showcasing Toyota's latest vehicle features and innovation.",
   },
   {
     src: "/showcase/toyota/demo-2.png",
     type: "image",
     company: "Toyota",
     alt: "Toyota work 2",
-    description: "Brand content highlighting Toyota's commitment to sustainability and performance.",
   },
 ];
 
@@ -90,11 +88,53 @@ const companies = [...new Set(showcaseData.map((item) => item.company))];
 
 export default function Showcase() {
   const [selectedCompany, setSelectedCompany] = useState("LearnKata");
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [count, setCount] = useState(0);
 
   const filteredItems =
     selectedCompany === "All"
       ? showcaseData
       : showcaseData.filter((item) => item.company === selectedCompany);
+
+  useEffect(() => {
+    if (!api) return;
+
+    const onSelect = () => {
+      setCount(api.scrollSnapList().length);
+      setCurrent(api.selectedScrollSnap());
+    };
+
+    const onReInit = () => {
+      setCount(api.scrollSnapList().length);
+      setCurrent(api.selectedScrollSnap());
+    };
+
+    // Initialize
+    onSelect();
+
+    // Listen for changes
+    api.on("select", onSelect);
+    api.on("reInit", onReInit);
+
+    return () => {
+      api.off("select", onSelect);
+      api.off("reInit", onReInit);
+    };
+  }, [api]);
+
+  // Reinitialize carousel when filtered items change
+  useEffect(() => {
+    if (!api) return;
+    api.reInit();
+  }, [api, filteredItems]);
+
+  const scrollTo = useCallback(
+    (index: number) => {
+      api?.scrollTo(index);
+    },
+    [api]
+  );
 
   return (
     <section id="showcase" className="py-20 bg-brand-blue/5">
@@ -125,6 +165,7 @@ export default function Showcase() {
 
         {/* Carousel */}
         <Carousel
+          setApi={setApi}
           opts={{
             align: "start",
             loop: true,
@@ -189,6 +230,24 @@ export default function Showcase() {
           <CarouselPrevious />
           <CarouselNext />
         </Carousel>
+
+        {/* Pagination Dots */}
+        {filteredItems.length > 0 && (
+          <div className="flex justify-center gap-2 mt-6">
+            {Array.from({ length: count }).map((_, index) => (
+              <button
+                key={index}
+                onClick={() => scrollTo(index)}
+                className={`transition-all duration-300 rounded-full ${
+                  index === current
+                    ? "w-8 h-2 bg-accent-blue"
+                    : "w-2 h-2 bg-foreground/20 hover:bg-foreground/40"
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
+        )}
 
         {filteredItems.length === 0 && (
           <div className="text-center py-20">
