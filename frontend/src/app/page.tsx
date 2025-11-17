@@ -2,6 +2,7 @@ import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import ExperienceTimeline from "@/components/ExperienceTimeline";
+import Showcase from "@/components/Showcase";
 import Contact from "@/components/Contact";
 
 const experiences = [
@@ -58,6 +59,7 @@ export default function Home() {
       <Hero />
       <About />
       <ExperienceTimeline experiences={experiences} />
+      <Showcase />
       <Contact />
     </div>
   );

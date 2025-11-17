@@ -25,7 +25,7 @@ export default function Navigation() {
       observerOptions
     );
 
-    const sections = ["hero", "about", "work", "contact"];
+    const sections = ["hero", "about", "work", "showcase", "contact"];
     sections.forEach((sectionId) => {
       const element = document.getElementById(sectionId);
       if (element) {
@@ -54,6 +54,7 @@ export default function Navigation() {
     { id: "hero", label: "Home" },
     { id: "about", label: "About" },
     { id: "work", label: "Work" },
+    { id: "showcase", label: "Showcase" },
     { id: "contact", label: "Contact" },
   ];
 
@@ -64,7 +65,7 @@ export default function Navigation() {
           <button
             key={item.id}
             onClick={() => scrollToSection(item.id)}
-            className={`flex items-center justify-center text-center text-sm transition-all duration-300 mx-auto ${
+            className={`flex items-center justify-center text-center text-xs transition-all duration-300 mx-auto ${
               activeSection === item.id
                 ? "bg-gray-200/60 text-foreground font-normal w-16 h-16 rounded-full shadow-inner"
                 : "text-foreground/60 hover:text-foreground w-16 h-8"
